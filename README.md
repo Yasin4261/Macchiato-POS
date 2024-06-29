@@ -34,4 +34,4 @@ Macchiato-POS'un açık kaynaklı bir proje olduğunu ve geliştirmeye herkesin 
 
 ### Teşekkürler
 
-Macchiato-POS'u kullandığınız için teşekkür ederiz! Herhangi bir sorunuz veya geri bildiriminiz varsa, lütfen bizimle [iletişim bilgileri](yasingunesctf@gmail.com) yoluyla iletişime geçmekten çekinmeyin.
+Macchiato-POS'u kullandığınız için teşekkür ederiz! Herhangi bir sorunuz veya geri bildiriminiz varsa, lütfen bizimle  yasingunesctf@gmail.com yoluyla iletişime geçmekten çekinmeyin.
