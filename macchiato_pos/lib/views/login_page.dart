@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:macchiato_pos/viewmodels/time_viewmodel.dart';
+import 'package:macchiato_pos/models/time_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,6 +11,19 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true; // Şifre gizliliği durumu
+  late TimeViewModel _timeViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _timeViewModel = TimeViewModel();
+  }
+
+  @override
+  void dispose() {
+    _timeViewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +60,33 @@ class _LoginPageState extends State<LoginPage> {
               width: screenWidth / 2,
               child: Column(
                 children: [
-                  const TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Enter your name',
-                      hintText: 'John Doe',
-                      prefixIcon: Icon(Icons.person),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: StreamBuilder<TimeModel>(
+                      stream: _timeViewModel.timeStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data!.currentTime,
+                            style: const TextStyle(fontSize: 24),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Enter your name',
+                        hintText: 'John Doe',
+                        prefixIcon: Icon(Icons.person),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -91,4 +127,10 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: LoginPage(),
+  ));
 }
