@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:macchiato_pos/views/login_page.dart';
+import 'package:macchiato_pos/routers/app_router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Machiato POS',
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      home: const LoginPage(),
+      routerConfig: AppRouter().router,
     );
   }
 }
