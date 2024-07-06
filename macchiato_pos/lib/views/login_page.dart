@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:macchiato_pos/services/auth_service.dart';
 import 'package:macchiato_pos/viewmodels/time_viewmodel.dart';
 import 'package:macchiato_pos/models/time_model.dart';
-import 'package:macchiato_pos/services/auth_service.dart';
-import 'package:go_router/go_router.dart';
+import 'package:macchiato_pos/views/register_page.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -16,19 +17,42 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
   String _errorMessage = '';
+
+  bool _obscureText = true; // Şifre gizliliği durumu
   late TimeViewModel _timeViewModel;
 
   @override
   void initState() {
     super.initState();
-    _timeViewModel =
-        TimeViewModel(); // veya _timeViewModel = getIt<TimeViewModel>(); gibi bir yöntemle ilklendirin
+    _timeViewModel = TimeViewModel();
   }
 
   @override
   void dispose() {
     _timeViewModel.dispose();
     super.dispose();
+  }
+
+  Future<void> _login() async {
+    try {
+      await _authService.login(
+        _emailController.text,
+        _passwordController.text,
+      );
+      context.go('/home');
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to login: $e';
+      });
+    }
+  }
+
+  Future<void> _register() async {
+    // context.go('/register');
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+
+    print("register tap");
   }
 
   @override
@@ -48,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: _register,
                     child: const Text(
                       "Register",
-                      style: TextStyle( fontSize: 15.0),
+                      style: TextStyle(fontSize: 15.0),
                     ),
                   ),
                 ),
@@ -81,27 +105,37 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: TextField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter your email',
-                        hintText: 'example@example.com',
-                        prefixIcon: Icon(Icons.email),
-                      ),
+                  TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter your email',
+                      hintText: 'example@example.com',
+                      prefixIcon: Icon(Icons.email),
                     ),
                   ),
                   const SizedBox(height: 20),
                   TextField(
-                    obscureText: true,
+                    obscureText:
+                        _obscureText, // Şifreyi gizlemek için kullanılır
                     controller: _passwordController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       labelText: 'Enter your password',
                       hintText: '123',
-                      prefixIcon: Icon(Icons.password),
+                      prefixIcon: const Icon(Icons.password),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -131,38 +165,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  Future<void> _login() async {
-    try {
-      await _authService.login(
-        _emailController.text,
-        _passwordController.text,
-      );
-      context.go('/home');
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Failed to login: $e';
-      });
-    }
-  }
-
-  Future<void> _register() async {
-    try {
-      await _authService.register(
-        _emailController.text,
-        _passwordController.text,
-      );
-      context.go('/home');
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Failed to register: $e';
-      });
-    }
-  }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: LoginPage(),
-  ));
 }

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:macchiato_pos/models/time_model.dart';
 
 class TimeViewModel {
-  final StreamController<TimeModel> _timeController =
-      StreamController<TimeModel>();
+  final StreamController<TimeModel> _timeController = StreamController<TimeModel>();
+  Timer? _timer;
 
   TimeViewModel() {
     _startTimer();
@@ -12,8 +12,10 @@ class TimeViewModel {
   Stream<TimeModel> get timeStream => _timeController.stream;
 
   void _startTimer() {
-    Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      _timeController.sink.add(TimeModel(currentTime: _getCurrentTime()));
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      if (!_timeController.isClosed) {
+        _timeController.sink.add(TimeModel(currentTime: _getCurrentTime()));
+      }
     });
   }
 
@@ -22,6 +24,7 @@ class TimeViewModel {
   }
 
   void dispose() {
+    _timer?.cancel();
     _timeController.close();
   }
 }
