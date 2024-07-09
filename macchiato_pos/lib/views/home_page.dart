@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:macchiato_pos/services/auth_service.dart';
+import 'package:macchiato_pos/widgets/home_widgets/panels.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
-    final AuthService _authService = AuthService();
+    final AuthService authService = AuthService();
 
     return Scaffold(
       appBar: AppBar(
@@ -16,14 +22,24 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              await _authService.logout();
+              await authService.logout();
               context.go('/');
             },
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Welcome to the home page!'),
+      body: const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            flex: 2,
+            child: OrderPanel(),
+          ),
+          Flexible(
+            flex: 7,
+            child: ProductPanel(),
+          ),
+        ],
       ),
     );
   }
