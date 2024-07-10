@@ -17,7 +17,10 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text(
+          'Siparişler',
+          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w500),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

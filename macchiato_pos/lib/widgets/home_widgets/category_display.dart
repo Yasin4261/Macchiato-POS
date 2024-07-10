@@ -38,156 +38,81 @@ class CategoryDisplay extends StatelessWidget {
   }
 }
 
-class IceCoffeeDisplay extends StatelessWidget {
-  const IceCoffeeDisplay({super.key});
+class BaseDisplay extends StatelessWidget {
+  final String categoryName;
+  final int itemCount;
+
+  const BaseDisplay(
+      {super.key, required this.categoryName, this.itemCount = 100});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      child: const Center(
-        child: Text(
-          'Page 1',
-          style: TextStyle(color: Colors.white),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 10, // Her satırda on öğe olacak
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 10.0,
         ),
+        itemCount: itemCount,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Item $index clicked in $categoryName'),
+                ),
+              );
+            },
+            child: Container(
+              color: Colors.blue,
+              child: Center(
+                child: Text(
+                  'Item $index',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class HotCoffeeDisplay extends StatelessWidget {
-  const HotCoffeeDisplay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepOrange,
-      child: const Center(
-        child: Text(
-          'Page 2',
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-    );
-  }
+class IceCoffeeDisplay extends BaseDisplay {
+  const IceCoffeeDisplay({super.key}) : super(categoryName: 'Ice Coffee');
 }
 
-class DessertsDisplay extends StatelessWidget {
-  const DessertsDisplay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepOrange,
-      child: const Center(
-        child: Text(
-          'Page 3',
-          style: TextStyle(color: Colors.amber),
-        ),
-      ),
-    );
-  }
+class HotCoffeeDisplay extends BaseDisplay {
+  const HotCoffeeDisplay({super.key}) : super(categoryName: 'Hot Coffee');
 }
 
-class BakeryDisplay extends StatelessWidget {
-  const BakeryDisplay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepOrange,
-      child: const Center(
-        child: Text(
-          'Page 4',
-          style: TextStyle(color: Colors.blueAccent),
-        ),
-      ),
-    );
-  }
+class DessertsDisplay extends BaseDisplay {
+  const DessertsDisplay({super.key}) : super(categoryName: 'Desserts');
 }
 
-class CaseFrontDisplay extends StatelessWidget {
-  const CaseFrontDisplay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepOrange,
-      child: const Center(
-        child: Text(
-          'Page 5',
-          style: TextStyle(color: Colors.deepPurple),
-        ),
-      ),
-    );
-  }
+class BakeryDisplay extends BaseDisplay {
+  const BakeryDisplay({super.key}) : super(categoryName: 'Bakery');
 }
 
-class OtherDrinkDisplay extends StatelessWidget {
-  const OtherDrinkDisplay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepOrange,
-      child: const Center(
-        child: Text(
-          'Page 6',
-          style: TextStyle(color: Colors.green),
-        ),
-      ),
-    );
-  }
+class CaseFrontDisplay extends BaseDisplay {
+  const CaseFrontDisplay({super.key}) : super(categoryName: 'Case Front');
 }
 
-class GiftDisplay extends StatelessWidget {
-  const GiftDisplay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepOrange,
-      child: const Center(
-        child: Text(
-          'Page 7',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
+class OtherDrinkDisplay extends BaseDisplay {
+  const OtherDrinkDisplay({super.key}) : super(categoryName: 'Other Drinks');
 }
 
-class IceCreamDisplay extends StatelessWidget {
-  const IceCreamDisplay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepOrange,
-      child: const Center(
-        child: Text(
-          'Page 8',
-          style: TextStyle(color: Colors.pink),
-        ),
-      ),
-    );
-  }
+class GiftDisplay extends BaseDisplay {
+  const GiftDisplay({super.key}) : super(categoryName: 'Gifts');
 }
 
-class BeanCoffees extends StatelessWidget {
-  const BeanCoffees({super.key});
+class IceCreamDisplay extends BaseDisplay {
+  const IceCreamDisplay({super.key}) : super(categoryName: 'Ice Cream');
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepOrange,
-      child: const Center(
-        child: Text(
-          'Page 9',
-          style: TextStyle(color: Colors.deepOrange),
-        ),
-      ),
-    );
-    
-  }
+class BeanCoffees extends BaseDisplay {
+  const BeanCoffees({super.key}) : super(categoryName: 'Bean Coffees');
 }

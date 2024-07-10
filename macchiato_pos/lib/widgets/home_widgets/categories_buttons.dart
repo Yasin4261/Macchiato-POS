@@ -2,83 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:macchiato_pos/models/categories_notifier.dart';
 
-class CategoriesButtons extends StatelessWidget {
+class CategoriesButtons extends StatefulWidget {
   const CategoriesButtons({super.key});
 
   @override
+  State<CategoriesButtons> createState() => _CategoriesButtonsState();
+}
+
+class _CategoriesButtonsState extends State<CategoriesButtons> {
+  @override
   Widget build(BuildContext context) {
     final categoriesNotifier =
-        Provider.of<CategoriesNotifier>(context, listen: false);
+        Provider.of<CategoriesNotifier>(context, listen: true);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(0),
-              child: const Text('Soğuk Kahveler'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(1),
-              child: const Text('Sıcak Kahveler'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(2),
-              child: const Text('Tatlılar'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(3),
-              child: const Text('Unlu Mamüller'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(4),
-              child: const Text('Kasa Önü'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(5),
-              child: const Text('Diğer İçecekler'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(6),
-              child: const Text('Hediyelik Eşyalar'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(7),
-              child: const Text('Dondurma'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () => categoriesNotifier.goToPage(8),
-              child: const Text('Çekirdek Kahveler'),
-            ),
-          ),
-        ],
-      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        _buildButton(context, categoriesNotifier, 0, 'Soğuk Kahveler'),
+        _buildButton(context, categoriesNotifier, 1, 'Sıcak Kahveler'),
+        _buildButton(context, categoriesNotifier, 2, 'Tatlılar'),
+        _buildButton(context, categoriesNotifier, 3, 'Unlu Mamüller'),
+        _buildButton(context, categoriesNotifier, 4, 'Kasa Önü'),
+        _buildButton(context, categoriesNotifier, 5, 'Diğer İçecekler'),
+        _buildButton(context, categoriesNotifier, 6, 'Hediyelik Eşyalar'),
+        _buildButton(context, categoriesNotifier, 7, 'Dondurma'),
+        _buildButton(context, categoriesNotifier, 8, 'Çekirdek Kahveler'),
+      ]),
     );
   }
+}
+
+Widget _buildButton(
+    BuildContext context, CategoriesNotifier notifier, int page, String title) {
+  final bool isSelected = notifier.currentPage == page;
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ElevatedButton(
+      onPressed: () => notifier.goToPage(page),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isSelected ? Colors.blue : Colors.grey,
+        foregroundColor: isSelected ? Colors.white : Colors.black,
+      ),
+      child: Text(title),
+    ),
+  );
 }
