@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:macchiato_pos/models/categories_notifier.dart';
+import 'package:macchiato_pos/provider/categories_notifier.dart';
 
 class CategoriesButtons extends StatefulWidget {
   const CategoriesButtons({super.key});

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:macchiato_pos/models/product.dart';
 import 'package:provider/provider.dart';
-import 'package:macchiato_pos/models/categories_notifier.dart';
+import 'package:macchiato_pos/provider/categories_notifier.dart';
+import 'package:macchiato_pos/provider/order_list_provider.dart';
 
-class CategoryDisplay extends StatelessWidget {
-  const CategoryDisplay({super.key});
+class ProductDisplay extends StatelessWidget {
+  const ProductDisplay({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,10 @@ class BaseDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orderListProvider = Provider.of<OrderListProvider>(context);
+    // For example
+    final products = [Product(name: "latte"), Product(name: "mocha")];
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
@@ -59,6 +65,7 @@ class BaseDisplay extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
+              orderListProvider.addOrder(products[1]);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Item $index clicked in $categoryName'),

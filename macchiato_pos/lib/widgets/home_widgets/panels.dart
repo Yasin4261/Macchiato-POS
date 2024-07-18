@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:macchiato_pos/widgets/home_widgets/categories_buttons.dart';
-import 'package:macchiato_pos/widgets/home_widgets/category_display.dart';
+import 'package:macchiato_pos/widgets/home_widgets/product_display.dart';
+import 'package:macchiato_pos/widgets/home_widgets/order_list_widget.dart';
+import 'package:macchiato_pos/provider/order_list_provider.dart';
 
 class OrderPanel extends StatelessWidget {
   const OrderPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final orderProvider = Provider.of<OrderListProvider>(context);
+
     return Container(
       height: double.infinity,
       width: double.maxFinite,
@@ -18,7 +23,10 @@ class OrderPanel extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text("data"),
+          const Text("Siparişler"),
+          Expanded(
+            child: OrderListWidget(orders: orderProvider.orders),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Align(
@@ -72,7 +80,7 @@ class ProductPanel extends StatelessWidget {
             child: Container(
               height: 20,
               color: Colors.transparent,
-              child: const CategoryDisplay(),
+              child: const ProductDisplay(),
             ),
           )
         ],
