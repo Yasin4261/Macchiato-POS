@@ -25,7 +25,7 @@ class ProductDisplay extends StatelessWidget {
       onPageChanged: (index) {
         categoriesNotifier.goToPage(index);
       },
-      children: const [
+      children: [
         IceCoffeeDisplay(),
         HotCoffeeDisplay(),
         DessertsDisplay(),
@@ -42,84 +42,120 @@ class ProductDisplay extends StatelessWidget {
 
 class BaseDisplay extends StatelessWidget {
   final String categoryName;
-  final int itemCount;
+  final List<Product> products;
 
   const BaseDisplay(
-      {super.key, required this.categoryName, this.itemCount = 100});
+      {super.key, required this.categoryName, required this.products});
 
   @override
   Widget build(BuildContext context) {
     final orderListProvider = Provider.of<OrderListProvider>(context);
-    // For example
-    final products = [Product(name: "latte"), Product(name: "mocha")];
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 10, // Her satırda on öğe olacak
-          crossAxisSpacing: 10.0,
-          mainAxisSpacing: 10.0,
-        ),
-        itemCount: itemCount,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              orderListProvider.addOrder(products[1]);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Item $index clicked in $categoryName'),
-                ),
-              );
-            },
-            child: Container(
-              color: Colors.blue,
-              child: Center(
-                child: Text(
-                  'Item $index',
-                  style: const TextStyle(color: Colors.white),
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 9, // Her satırda dokuz öğe olacak
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
+          ),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return GestureDetector(
+              onTap: () {
+                // Yeni bir Product oluşturuluyor ve yeni bir ID atanıyor
+                final newProduct = Product(
+                  name: product.name,
+                  price: product.price,
+                  category: product.category,
+                );
+                orderListProvider.addOrder(newProduct);
+                print("Name : ${newProduct.name} ; id : ${newProduct.id}");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:
+                        Text('${newProduct.name} clicked in $categoryName'),
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(16.0)),
+                child: Center(
+                  child: Text(
+                    product.name,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-      ),
-    );
+            );
+          },
+        ));
   }
 }
 
 class IceCoffeeDisplay extends BaseDisplay {
-  const IceCoffeeDisplay({super.key}) : super(categoryName: 'Ice Coffee');
+  IceCoffeeDisplay({super.key})
+      : super(categoryName: 'Ice Coffee', products: [
+          Product(name: "Iced Latte"),
+          Product(name: "Iced Mocha")
+        ]);
 }
 
 class HotCoffeeDisplay extends BaseDisplay {
-  const HotCoffeeDisplay({super.key}) : super(categoryName: 'Hot Coffee');
+  HotCoffeeDisplay({super.key})
+      : super(
+            categoryName: 'Hot Coffee',
+            products: [Product(name: "Espresso"), Product(name: "Americano")]);
 }
 
 class DessertsDisplay extends BaseDisplay {
-  const DessertsDisplay({super.key}) : super(categoryName: 'Desserts');
+  DessertsDisplay({super.key})
+      : super(
+            categoryName: 'Desserts',
+            products: [Product(name: "Cheesecake"), Product(name: "Brownie")]);
 }
 
 class BakeryDisplay extends BaseDisplay {
-  const BakeryDisplay({super.key}) : super(categoryName: 'Bakery');
+  BakeryDisplay({super.key})
+      : super(
+            categoryName: 'Bakery',
+            products: [Product(name: "Croissant"), Product(name: "Muffin")]);
 }
 
 class CaseFrontDisplay extends BaseDisplay {
-  const CaseFrontDisplay({super.key}) : super(categoryName: 'Case Front');
+  CaseFrontDisplay({super.key})
+      : super(
+            categoryName: 'Case Front',
+            products: [Product(name: "Sandwich"), Product(name: "Salad")]);
 }
 
 class OtherDrinkDisplay extends BaseDisplay {
-  const OtherDrinkDisplay({super.key}) : super(categoryName: 'Other Drinks');
+  OtherDrinkDisplay({super.key})
+      : super(
+            categoryName: 'Other Drinks',
+            products: [Product(name: "Tea"), Product(name: "Smoothie")]);
 }
 
 class GiftDisplay extends BaseDisplay {
-  const GiftDisplay({super.key}) : super(categoryName: 'Gifts');
+  GiftDisplay({super.key})
+      : super(
+            categoryName: 'Gifts',
+            products: [Product(name: "Gift Card"), Product(name: "Mug")]);
 }
 
 class IceCreamDisplay extends BaseDisplay {
-  const IceCreamDisplay({super.key}) : super(categoryName: 'Ice Cream');
+  IceCreamDisplay({super.key})
+      : super(
+            categoryName: 'Ice Cream',
+            products: [Product(name: "Vanilla"), Product(name: "Chocolate")]);
 }
 
 class BeanCoffees extends BaseDisplay {
-  const BeanCoffees({super.key}) : super(categoryName: 'Bean Coffees');
+  BeanCoffees({super.key})
+      : super(
+            categoryName: 'Bean Coffees',
+            products: [Product(name: "Arabica"), Product(name: "Robusta")]);
 }
