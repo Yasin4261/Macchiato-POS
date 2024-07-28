@@ -66,6 +66,8 @@ class BaseDisplay extends StatelessWidget {
               onTap: () {
                 // Yeni bir Product oluşturuluyor ve yeni bir ID atanıyor
                 final newProduct = Product(
+                  user: product
+                      .user, // Qr koddan gelen id eğer okutulduysa eşitle
                   name: product.name,
                   price: product.price,
                   category: product.category,

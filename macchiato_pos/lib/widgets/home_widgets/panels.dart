@@ -34,6 +34,9 @@ class OrderPanel extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // Butona tıklanma işlevi burada tanımlanacak
+                  final userId = '6689a1308f3d73ddd9c40c37'; // Kullanıcı ID'si
+                  final orderListProvider = context.read<OrderListProvider>();
+                  orderListProvider.sendOrders(userId);
                   print("Ödeme Al butonuna tıklandı");
                 },
                 style: ElevatedButton.styleFrom(
